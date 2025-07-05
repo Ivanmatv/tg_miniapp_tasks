@@ -380,14 +380,17 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         
         // Если это первый файл, добавляем дату загрузки
         if (fileNumber === 1) {
-            const today = new Date();
-            // Преобразуем в Московское время (UTC+3)
-            const moscowOffest = 3 * 60; // 3 часа в минтуах 
+            const now = new Date();
 
-            const moscowTime = new Date(today.getTime() + (moscowOffest + today.getTimezoneOffset()) * 60 * 1000);
-
-            // Форматируем дату и время в ISO 8601 с указанием смещения
-            const formattedDateTime = moscowTime.toISOString().slice(0, 19) + "+03:00";
+            // Получаем текущее смещение часового пояса в минутах
+            const timezoneOffset = now.getTimezoneOffset();
+            
+            // Вычисляем Московское время (UTC+3)
+            // Добавляем смещение для Москвы (180 минут) и вычитаем текущее смещение
+            const moscowTime = new Date(now.getTime() + (180 + timezoneOffset) * 60 * 1000);
+            
+            // Форматируем дату и время в ISO 8601
+            const formattedDateTime = moscowTime.toISOString();
 
             extraData[DATE_FIELD_ID] = formattedDateTime;
         }
