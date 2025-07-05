@@ -381,9 +381,11 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         // Если это первый файл, добавляем дату загрузки
         if (fileNumber === 1) {
             const today = new Date();
-            // Форматируем дату в YYYY-MM-DD (ISO 8601)
-            const formattedDate = today.toISOString().split('T')[0];
-            extraData[DATE_FIELD_ID] = formattedDate;
+            // Преобразуем в Московское время (UTC+3)
+            const moscowTime = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+            // Форматируем дату и время в ISO 8601
+            const formattedDateTime = moscowTime.toISOString();
+            extraData[DATE_FIELD_ID] = formattedDateTime;
         }
         
         // Обновление записи в базе данных с дополнительными данными
