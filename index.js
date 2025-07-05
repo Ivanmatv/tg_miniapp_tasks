@@ -18,7 +18,7 @@ const FILE_UPLOAD_ENDPOINT = `${BASE_URL}/api/v2/storage/upload`;
 // ID полей для загрузки заданий
 const SOLUTION_FIELDS = {
     solution1: "cuk0poya68l6h30", // Индивидуальное задание
-    solution2: "cel4fwk74vwnrt8", // Маршрут
+    solution2: "c2v08b0bon6lv7q", // Маршрут
 };
 
 // Ключ 
