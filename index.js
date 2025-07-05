@@ -382,7 +382,7 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         if (fileNumber === 1) {
             const today = new Date();
             // Преобразуем в Московское время (UTC+3)
-            const moscowTime = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+            const moscowTime = new Date(today.getTime() + 3 * 60 * 60 * 1000);
             // Форматируем дату и время в ISO 8601
             const formattedDateTime = moscowTime.toISOString();
             extraData[DATE_FIELD_ID] = formattedDateTime;
