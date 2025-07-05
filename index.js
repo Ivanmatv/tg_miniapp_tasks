@@ -26,7 +26,6 @@ const API_KEY = "N0eYiucuiiwSGIvPK5uIcOasZc_nJy6mBUihgaYQ";
 
 // Элементы интерфейса
 const screens = {
-    email: document.getElementById("emailScreen"),
     upload1: document.getElementById("uploadScreen1"),
     upload2: document.getElementById("uploadScreen2"),
     result: document.getElementById("resultScreen")
@@ -67,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     currentRecordId = userRecord.id;
     // Сразу показываем первый экран загрузки
-    showScreen("upload");
+    showScreen("upload1");
 
   } catch (error) {
     showErrorScreen(error.message)
