@@ -16,10 +16,12 @@ const RECORDS_ENDPOINT = `${BASE_URL}/api/v2/tables/${TABLE_ID}/records`;
 const FILE_UPLOAD_ENDPOINT = `${BASE_URL}/api/v2/storage/upload`;
 
 // ID полей для загрузки заданий
-const SOLUTION_FIELDS = {
-    solution1: "cuk0poya68l6h30", // Индивидуальное задание
-    solution2: "c2v08b0bon6lv7q", // Маршрут
-};
+INDIVIDUAL_TASK = "cuk0poya68l6h30", // Индивидуальное задание
+DATE_FIELD_INDIVIDUAL_TASK = "cpzymi7tw8pkmx8"  // Дата загрузик индивидуального задания
+
+ROUTE = "c2v08b0bon6lv7q", // Маршрут
+DATE_FIELD_ROUTE = "c3960t6yjyd5tg6"    // Дата загрузки маршрута
+
 
 // Ключ 
 const API_KEY = "N0eYiucuiiwSGIvPK5uIcOasZc_nJy6mBUihgaYQ";
@@ -352,6 +354,10 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
     const fileInput = document.getElementById(`fileInput${fileNumber}`);
     const errorElement = document.getElementById(`error${fileNumber}`);
     const file = fileInput.files[0];
+    async function handleFileUpload(fileNumber, fieldId, nextScreen) {
+    const fileInput = document.getElementById(`fileInput${fileNumber}`);
+    const errorElement = document.getElementById(`error${fileNumber}`);
+    const file = fileInput.files[0];
     
     errorElement.classList.add("hidden");
     
@@ -378,21 +384,21 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         // Формируем дополнительные данные для обновления
         let extraData = {};
         
-        // Если это первый файл, добавляем дату загрузки
-        if (fileNumber === 1) {
+        // Определяем поле для даты в зависимости от типа загрузки
+        let dateFieldId = null;
+        if (fieldId === INDIVIDUAL_TASK) {
+            dateFieldId = DATE_FIELD_INDIVIDUAL_TASK;
+        } else if (fieldId === ROUTE) {
+            dateFieldId = DATE_FIELD_ROUTE;
+        }
+        
+        // Устанавливаем дату загрузки, если определено поле
+        if (dateFieldId) {
             const now = new Date();
-
-            // Получаем текущее смещение часового пояса в минутах
             const timezoneOffset = now.getTimezoneOffset();
-            
-            // Вычисляем Московское время (UTC+3)
-            // Добавляем смещение для Москвы (180 минут) и вычитаем текущее смещение
             const moscowTime = new Date(now.getTime() + (180 + timezoneOffset) * 60 * 1000);
-            
-            // Форматируем дату и время в ISO 8601
             const formattedDateTime = moscowTime.toISOString();
-
-            extraData[DATE_FIELD_ID] = formattedDateTime;
+            extraData[dateFieldId] = formattedDateTime;
         }
         
         // Обновление записи в базе данных с дополнительными данными
