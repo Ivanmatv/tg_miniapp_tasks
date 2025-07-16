@@ -322,14 +322,7 @@ function showScreen(toScreen) {
     Object.values(screens).forEach(screen => {
         screen.classList.add("hidden");
     });
-    
-    // Исправлено: показываем экран по ID, а не по ключу объекта
-    const screenElement = document.getElementById(toScreen);
-    if (screenElement) {
-        screenElement.classList.remove("hidden");
-    } else {
-        console.error(`Экран с ID ${toScreen} не найден`);
-    }
+    screens[toScreen].classList.remove("hidden");
 }
 
 /**
