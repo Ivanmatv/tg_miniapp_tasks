@@ -354,10 +354,6 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
     const fileInput = document.getElementById(`fileInput${fileNumber}`);
     const errorElement = document.getElementById(`error${fileNumber}`);
     const file = fileInput.files[0];
-    async function handleFileUpload(fileNumber, fieldId, nextScreen) {
-    const fileInput = document.getElementById(`fileInput${fileNumber}`);
-    const errorElement = document.getElementById(`error${fileNumber}`);
-    const file = fileInput.files[0];
     
     errorElement.classList.add("hidden");
     
@@ -418,11 +414,11 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
 
 // Назначение обработчиков для кнопок загрузки файлов
 document.getElementById("submitFile1").addEventListener("click", () => {
-    handleFileUpload(1, SOLUTION_FIELDS.solution1, "upload2");
+    handleFileUpload(1, INDIVIDUAL_TASK, "upload2");
 });
 
 document.getElementById("submitFile2").addEventListener("click", () => {
-    handleFileUpload(2, SOLUTION_FIELDS.solution2);
+    handleFileUpload(2, ROUTE);
 });
 
 
