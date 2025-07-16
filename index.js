@@ -19,17 +19,12 @@ const FILE_UPLOAD_ENDPOINT = `${BASE_URL}/api/v2/storage/upload`;
 INDIVIDUAL_TASK = "cuk0poya68l6h30", // Индивидуальное задание
 DATE_FIELD_INDIVIDUAL_TASK = "cpzymi7tw8pkmx8"  // Дата загрузик индивидуального задания
 
-ROUTE = "c2v08b0bon6lv7q", // Маршрут
-DATE_FIELD_ROUTE = "c3960t6yjyd5tg6"    // Дата загрузки маршрута
-
-
 // Ключ 
 const API_KEY = "N0eYiucuiiwSGIvPK5uIcOasZc_nJy6mBUihgaYQ";
 
 // Элементы интерфейса
 const screens = {
     upload1: document.getElementById("uploadScreen1"),
-    upload2: document.getElementById("uploadScreen2"),
     result: document.getElementById("resultScreen")
 };
 
@@ -380,22 +375,12 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         // Формируем дополнительные данные для обновления
         let extraData = {};
         
-        // Определяем поле для даты в зависимости от типа загрузки
-        let dateFieldId = null;
-        if (fieldId === INDIVIDUAL_TASK) {
-            dateFieldId = DATE_FIELD_INDIVIDUAL_TASK;
-        } else if (fieldId === ROUTE) {
-            dateFieldId = DATE_FIELD_ROUTE;
-        }
-        
-        // Устанавливаем дату загрузки, если определено поле
-        if (dateFieldId) {
-            const now = new Date();
-            const timezoneOffset = now.getTimezoneOffset();
-            const moscowTime = new Date(now.getTime() + (180 + timezoneOffset) * 60 * 1000);
-            const formattedDateTime = moscowTime.toISOString();
-            extraData[dateFieldId] = formattedDateTime;
-        }
+        // Устанавливаем дату загрузки для индивидуального задания
+        const now = new Date();
+        const timezoneOffset = now.getTimezoneOffset();
+        const moscowTime = new Date(now.getTime() + (180 + timezoneOffset) * 60 * 1000);
+        const formattedDateTime = moscowTime.toISOString();
+        extraData[DATE_FIELD_INDIVIDUAL_TASK] = formattedDateTime;
         
         // Обновление записи в базе данных с дополнительными данными
         await updateRecord(currentRecordId, fieldId, file, extraData);
@@ -404,8 +389,6 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         
         if (nextScreen) {
             showScreen(nextScreen);
-        } else {
-            showScreen("result");
         }
     } catch (error) {
         showError(errorElement, error.message);
@@ -415,10 +398,6 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
 // Назначение обработчиков для кнопок загрузки файлов
 document.getElementById("submitFile1").addEventListener("click", () => {
     handleFileUpload(1, INDIVIDUAL_TASK, "upload2");
-});
-
-document.getElementById("submitFile2").addEventListener("click", () => {
-    handleFileUpload(2, ROUTE);
 });
 
 

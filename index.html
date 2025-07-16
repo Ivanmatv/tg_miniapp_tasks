@@ -11,10 +11,6 @@
 <body>
 
     <div class="screen hidden" id="uploadScreen1">
-        <div class="step-indicator">
-            <div class="step active">1</div>
-            <div class="step">2</div>
-        </div>
         <h2>Загрузите индивидуальное задание</h2>
         <div class="file-info">Формат: PDF, DOCX, PNG, XLSX (макс. 15MB)</div>
         <input type="file" id="fileInput1">
@@ -24,24 +20,6 @@
         <div class="upload-status" id="status1"></div>
         <div id="error1" class="error-message hidden"></div>
         <button id="submitFile1">Отправить файл</button>
-    </div>
-
-    <div class="screen hidden" id="uploadScreen2">
-        <div class="step-indicator">
-            <div class="step completed">2</div>
-            <div class="step active">3</div>
-        </div>
-        <h2>Загрузите маршрут</h2>
-        <div class="file-info">Формат: PDF, DOCX, PNG, XLSX (макс. 15MB)</div>
-        <input type="file" id="fileInput2">
-        <div class="progress-bar">
-            <div class="progress" id="progress2"></div>
-        </div>
-        <div class="upload-status" id="status2"></div>
-        <div id="error2" class="error-message hidden"></div>
-        <div class="button-group">
-            <button id="submitFile2">Отправить файл</button>
-        </div>
     </div>
 
     <div class="screen hidden" id="resultScreen">
