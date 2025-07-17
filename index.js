@@ -316,19 +316,22 @@ function trackUploadProgress(file, progressId, statusId) {
 
 /**
     * Переключение между экранами приложения
-    * @param {string} toScreen - ID экрана для отображения
+    * @param {string} screenKey - Ключ экрана в объекте screens
     */
-function showScreen(toScreen) {
+function showScreen(screenKey) {
+    // Скрываем все экраны
     Object.values(screens).forEach(screen => {
-        screen.classList.add("hidden");
+        if (screen) {
+            screen.classList.add("hidden");
+        }
     });
     
-    // Исправлено: показываем экран по ID, а не по ключу объекта
-    const screenElement = document.getElementById(toScreen);
-    if (screenElement) {
-        screenElement.classList.remove("hidden");
+    // Показываем запрошенный экран, если он существует
+    const screenToShow = screens[screenKey];
+    if (screenToShow) {
+        screenToShow.classList.remove("hidden");
     } else {
-        console.error(`Экран с ID ${toScreen} не найден`);
+        console.error(`Экран с ключом ${screenKey} не найден`);
     }
 }
 
@@ -394,7 +397,7 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         
         uploadedFiles[fileNumber - 1] = file;
         
-        showScreen("resultScreen");
+        showScreen("result");
 
     } catch (error) {
         showError(errorElement, error.message);
