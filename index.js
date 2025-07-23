@@ -9,27 +9,33 @@ const TABLE_ID = "maiff22q0tefj6t";
 const VIEW_ID = "vwy5xmvdj8cuwwcx";
 
 // Добавим ID поля для даты загрузки
-const DATE_FIELD_ID = "c3960t6yjyd5tg6";
+const DATE_FIELD_ID = "cpzymi7tw8pkmx8";
 
 // Эндпоинты для работы с записями
 const RECORDS_ENDPOINT = `${BASE_URL}/api/v2/tables/${TABLE_ID}/records`;
 const FILE_UPLOAD_ENDPOINT = `${BASE_URL}/api/v2/storage/upload`;
 
-// ID полей для загрузки заданий
-INDIVIDUAL_TASK = "cuk0poya68l6h30", // Индивидуальное задание
-DATE_FIELD_INDIVIDUAL_TASK = "cpzymi7tw8pkmx8"  // Дата загрузик индивидуального задания
+// ID полей для загрузки решений
+const SOLUTION_FIELDS = {
+    solution1: "cuk0poya68l6h30", // Загрузите индивидуальное задание 1
+    solution2: "cvjx55zld5x1n6b", // Загрузите индивидуальное задание 2
+    solution3: "c0g3ard2hj3vw2t"  // Загрузите индивидуальное задание 3
+};
 
 // Ключ 
 const API_KEY = "N0eYiucuiiwSGIvPK5uIcOasZc_nJy6mBUihgaYQ";
 
 // Элементы интерфейса
 const screens = {
+    welcome: document.getElementById("welcomeScreen"),
     upload1: document.getElementById("uploadScreen1"),
+    upload2: document.getElementById("uploadScreen2"),
+    upload3: document.getElementById("uploadScreen3"),
     result: document.getElementById("resultScreen")
 };
 
 let currentRecordId = null;
-let uploadedFiles = [null, null];
+let uploadedFiles = [null, null, null];
 
 // Функция аутентификации по tg-id
 function getTelegramUserId() {
@@ -63,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     currentRecordId = userRecord.id;
     // Сразу показываем первый экран загрузки
-    showScreen("upload1");
+    showScreen("welcome");
 
   } catch (error) {
     showErrorScreen(error.message)
@@ -91,7 +97,8 @@ function showErrorScreen(message) {
 // Функции для работы с NocoDB API
 
 /**
-    * Поиск пользователя по tg-id в базе NocoDB
+    * Поиск пользователя по email в базе NocoDB
+    * @param {string} email - Адрес электронной почты
     * @returns {Promise<Object|null>} - Найденная запись или null
     */
 async function findUserByTelegramId() {
@@ -252,7 +259,7 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
     */
 function validateFile(file) {
     if (file.size > 15 * 1024 * 1024) {
-        return "Файл слишком большой (макс. 15MB)";
+        return "Файл слишком большой (макс. 5MB)";
     }
     
     const validTypes = [
@@ -316,22 +323,17 @@ function trackUploadProgress(file, progressId, statusId) {
 
 /**
     * Переключение между экранами приложения
-    * @param {string} screenKey - Ключ экрана в объекте screens
+    * @param {string} toScreen - ID экрана для отображения
     */
-function showScreen(screenKey) {
+function showScreen(toScreen) {
     // Скрываем все экраны
-    Object.values(screens).forEach(screen => {
-        if (screen) {
-            screen.classList.add("hidden");
-        }
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.add("hidden");
     });
     
-    // Показываем запрошенный экран, если он существует
-    const screenToShow = screens[screenKey];
-    if (screenToShow) {
-        screenToShow.classList.remove("hidden");
-    } else {
-        console.error(`Экран с ключом ${screenKey} не найден`);
+    // Показываем только целевой экран
+    if (screens[toScreen]) {
+        screens[toScreen].classList.remove("hidden");
     }
 }
 
@@ -385,30 +387,54 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         // Формируем дополнительные данные для обновления
         let extraData = {};
         
-        // Устанавливаем дату загрузки для индивидуального задания
-        const now = new Date();
-        const timezoneOffset = now.getTimezoneOffset();
-        const moscowTime = new Date(now.getTime() + (180 + timezoneOffset) * 60 * 1000);
-        const formattedDateTime = moscowTime.toISOString();
-        extraData[DATE_FIELD_INDIVIDUAL_TASK] = formattedDateTime;
+        // Если это первый файл, добавляем дату загрузки
+        if (fileNumber === 1) {
+            const today = new Date();
+            // Форматируем дату в YYYY-MM-DD (ISO 8601)
+            const formattedDate = today.toISOString().split('T')[0];
+            extraData[DATE_FIELD_ID] = formattedDate;
+        }
         
         // Обновление записи в базе данных с дополнительными данными
         await updateRecord(currentRecordId, fieldId, file, extraData);
         
         uploadedFiles[fileNumber - 1] = file;
         
-        showScreen("result");
-
+        if (nextScreen) {
+            showScreen(nextScreen);
+        } else {
+            showScreen("result");
+        }
     } catch (error) {
         showError(errorElement, error.message);
     }
 }
 
 // Назначение обработчиков для кнопок загрузки файлов
-document.getElementById("submitFile1").addEventListener("click", () => {
-    handleFileUpload(1, INDIVIDUAL_TASK);
+document.getElementById("startUpload").addEventListener("click", () => {
+    showScreen("upload1");
 });
 
+document.getElementById("submitFile1").addEventListener("click", () => {
+    handleFileUpload(1, SOLUTION_FIELDS.solution1, "upload2");
+});
+
+document.getElementById("submitFile2").addEventListener("click", () => {
+    handleFileUpload(2, SOLUTION_FIELDS.solution2, "upload3");
+});
+
+document.getElementById("submitFile3").addEventListener("click", () => {
+    handleFileUpload(3, SOLUTION_FIELDS.solution3);
+});
+
+// Обработка пропуска загрузки
+document.getElementById("skipFile2").addEventListener("click", () => {
+    showScreen("result");
+});
+
+document.getElementById("skipFile3").addEventListener("click", () => {
+    showScreen("result");
+});
 
 // Закрытие приложения
 document.getElementById("closeApp").addEventListener("click", () => {

@@ -11,7 +11,12 @@
 <body>
 
     <div class="screen hidden" id="uploadScreen1">
-        <h2>Загрузите индивидуальное задание</h2>
+        <div class="step-indicator">
+            <div class="step active">1</div> <!-- Первый шаг теперь загрузка -->
+            <div class="step">2</div>
+            <div class="step">3</div>
+        </div>
+        <h2>Загрузите индивидуальное задание 1</h2>
         <div class="file-info">Формат: PDF, DOCX, PNG, XLSX (макс. 15MB)</div>
         <input type="file" id="fileInput1">
         <div class="progress-bar">
@@ -20,6 +25,46 @@
         <div class="upload-status" id="status1"></div>
         <div id="error1" class="error-message hidden"></div>
         <button id="submitFile1">Отправить файл</button>
+    </div>
+
+    <div class="screen hidden" id="uploadScreen2">
+        <div class="step-indicator">
+            <div class="step completed">1</div>
+            <div class="step completed">2</div>
+            <div class="step active">3</div>
+        </div>
+        <h2>Загрузите индивидуальное 2</h2>
+        <div class="file-info">Формат: PDF, DOCX, PNG, XLSX (макс. 15MB)</div>
+        <input type="file" id="fileInput2">
+        <div class="progress-bar">
+            <div class="progress" id="progress2"></div>
+        </div>
+        <div class="upload-status" id="status2"></div>
+        <div id="error2" class="error-message hidden"></div>
+        <div class="button-group">
+            <button id="submitFile2">Отправить файл</button>
+            <button id="skipFile2" class="secondary">Больше не буду</button>
+        </div>
+    </div>
+
+    <div class="screen hidden" id="uploadScreen3">
+        <div class="step-indicator">
+            <div class="step completed">1</div>
+            <div class="step completed">2</div>
+            <div class="step active">3</div>
+        </div>
+        <h2>Загрузите индивидуальное 3</h2>
+        <div class="file-info">Формат: PDF, DOC, PNG, XLSX (макс. 15MB)</div>
+        <input type="file" id="fileInput3">
+        <div class="progress-bar">
+            <div class="progress" id="progress3"></div>
+        </div>
+        <div class="upload-status" id="status3"></div>
+        <div id="error3" class="error-message hidden"></div>
+        <div class="button-group">
+            <button id="submitFile3">Отправить файл</button>
+            <button id="skipFile3" class="secondary">Завершить</button>
+        </div>
     </div>
 
     <div class="screen hidden" id="resultScreen">
