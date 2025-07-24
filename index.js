@@ -393,7 +393,7 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
             const timezoneOffset = now.getTimezoneOffset();
             const moscowTime = new Date(now.getTime() + (180 + timezoneOffset) * 60 * 1000);
             const formattedDateTime = moscowTime.toISOString();
-            extraData[DATE_FIELD_ROUTE] = formattedDateTime;
+            extraData[DATE_FIELD_ID] = formattedDateTime;
         }
         
         // Обновление записи в базе данных с дополнительными данными
