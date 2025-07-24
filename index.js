@@ -398,7 +398,7 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         
         // Если это первый файл, добавляем дату загрузки
         if (fileNumber === 1) {
-            extraData[DATE_FIELD_ID] = getCurrentLocalDate();
+            extraData[DATE_FIELD_ID] = getCurrentLocalDateTime();
         }
         
         // Обновление записи в базе данных с дополнительными данными
