@@ -39,11 +39,11 @@ let uploadedFiles = [null, null, null];
 
 // Функция определения точного времени
 function getCurrentDateTime() {
-    const date = new Date();
-    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-        .toISOString()
-        .replace('T', ' ')
-        .slice(0, 16);
+    const now = new Date();
+    // Коррекция часового пояса
+    const timezoneOffset = now.getTimezoneOffset() * 60000; // в миллисекундах
+    const localDate = new Date(now - timezoneOffset);
+    return localDate.toISOString().split('T')[0];
 }
 
 // Функция аутентификации по tg-id
