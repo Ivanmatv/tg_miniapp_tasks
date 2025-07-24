@@ -37,6 +37,15 @@ const screens = {
 let currentRecordId = null;
 let uploadedFiles = [null, null, null];
 
+// Функция определения точного времени
+function getCurrentDateTime() {
+    const date = new Date();
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+        .toISOString()
+        .replace('T', ' ')
+        .slice(0, 16);
+}
+
 // Функция аутентификации по tg-id
 function getTelegramUserId() {
   if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
@@ -389,10 +398,7 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
         
         // Если это первый файл, добавляем дату загрузки
         if (fileNumber === 1) {
-            const today = new Date();
-            // Форматируем дату в YYYY-MM-DD (ISO 8601)
-            const formattedDate = today.toISOString().split('T')[0];
-            extraData[DATE_FIELD_ID] = formattedDate;
+            extraData[DATE_FIELD_ID] = getCurrentLocalDate();
         }
         
         // Обновление записи в базе данных с дополнительными данными
