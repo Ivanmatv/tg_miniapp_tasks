@@ -412,6 +412,10 @@ async function handleFileUpload(fileNumber, fieldId, nextScreen) {
 
 // Назначение обработчиков для кнопок загрузки файлов
 
+document.getElementById("startUpload").addEventListener("click", () => {
+    showScreen("upload1");
+});
+
 document.getElementById("submitFile1").addEventListener("click", () => {
     handleFileUpload(1, SOLUTION_FIELDS.solution1, "upload2");
 });
