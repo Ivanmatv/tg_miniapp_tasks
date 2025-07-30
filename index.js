@@ -171,7 +171,19 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
         }
         
         // Получаем данные ответа
-        const fileInfo = await uploadResponse.json();
+        const responseData = await uploadResponse.json();
+        console.log("Ответ от сервера загрузки файла:", responseData);
+
+        // Обрабатываем возможные форматы ответа
+        let fileInfo;
+        if (Array.isArray(responseData) && responseData.length > 0) {
+            fileInfo = responseData[0];
+        } else if (typeof responseData === 'object' && responseData !== null) {
+            fileInfo = responseData;
+        } else {
+            throw new Error("Некорректный формат ответа сервера");
+        }
+
         console.log("Ответ от сервера загрузки файла:", fileInfo);
 
         // Проверяем наличие path (теперь используем path вместо signedPath)
@@ -179,6 +191,7 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
             console.error("Не получен url в ответе:", fileInfo);
             throw new Error("Не удалось получить информацию о файле");
         }
+
         const fileUrl = fileInfo.url; // Используем готовый URL из ответа
         const fileName = fileInfo.title;
         const fileType = fileInfo.mimetype;
