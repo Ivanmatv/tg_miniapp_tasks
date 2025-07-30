@@ -173,16 +173,24 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
         // Получаем данные ответа
         let uploadData = await uploadResponse.json();
         
-        // Если ответ - объект, преобразуем в массив
-        if (!Array.isArray(uploadData)) {
-            uploadData = [uploadData];
+        // Обрабатываем возможные форматы ответа (массив или объект)
+        let fileInfo;
+        if (Array.isArray(uploadData) && uploadData.length > 0) {
+            fileInfo = uploadData[0];
+        } else if (typeof uploadData === 'object' && uploadData !== null) {
+            fileInfo = uploadData;
+        } else {
+            throw new Error("Некорректный формат ответа сервера");
         }
-        
-        // Проверяем наличие signedPath
-        if (!uploadData.length || !uploadData[0]?.signedPath) {
-            console.error("Не получен signedPath в ответе:", uploadData);
+
+        // Проверяем наличие path (теперь используем path вместо signedPath)
+        if (!fileInfo?.path) {
+            console.error("Не получен path в ответе:", fileInfo);
             throw new Error("Не удалось получить информацию о файле");
         }
+
+        // Используем path для формирования URL
+        const fileUrl = `${BASE_URL}/${fileInfo.path}`;
         
         // Получаем данные о загруженном файле
         const firstItem = uploadData[0];
@@ -206,7 +214,7 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
                 size: fileSize,
                 title: fileName,
                 // Используем путь из ответа сервера для скачивания
-                url: `${BASE_URL}/${firstItem.path}`,
+                url: fileUrl,  // Используем сформированный URL
                 icon: getFileIcon(fileType)
             }
         ];
