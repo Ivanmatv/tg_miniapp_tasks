@@ -171,33 +171,19 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
         }
         
         // Получаем данные ответа
-        let uploadData = await uploadResponse.json();
-        
-        // Обрабатываем возможные форматы ответа (массив или объект)
-        let fileInfo;
-        if (Array.isArray(uploadData) && uploadData.length > 0) {
-            fileInfo = uploadData[0];
-        } else if (typeof uploadData === 'object' && uploadData !== null) {
-            fileInfo = uploadData;
-        } else {
-            throw new Error("Некорректный формат ответа сервера");
-        }
+        const fileInfo = await uploadResponse.json();
+        console.log("Ответ от сервера загрузки файла:", fileInfo);
 
         // Проверяем наличие path (теперь используем path вместо signedPath)
-        if (!fileInfo?.path) {
-            console.error("Не получен path в ответе:", fileInfo);
+        if (!fileInfo?.url) {
+            console.error("Не получен url в ответе:", fileInfo);
             throw new Error("Не удалось получить информацию о файле");
         }
-
-        // Используем path для формирования URL
-        const fileUrl = `${BASE_URL}/${fileInfo.path}`;
-        
-        // Получаем данные о загруженном файле
-        const firstItem = uploadData[0];
-        const fileName = firstItem.title || file.name;
-        const fileType = file.type;
-        const fileSize = file.size;
-        
+        const fileUrl = fileInfo.url; // Используем готовый URL из ответа
+        const fileName = fileInfo.title;
+        const fileType = fileInfo.mimetype;
+        const fileSize = fileInfo.size;
+                
         // Определяем иконку по типу файла
         const getFileIcon = (mimeType) => {
             if (mimeType.includes("pdf")) return "mdi-file-pdf-outline";
@@ -229,7 +215,7 @@ async function updateRecord(recordId, fieldId, file, extraData = {}) {
         );
         
         console.log("Отправка данных для обновления:", updateData);
-        
+
         // 3. Отправляем запрос на обновление записи
         const updateResponse = await fetch(RECORDS_ENDPOINT, {
             method: "PATCH",
