@@ -5,11 +5,11 @@ tg.MainButton.hide();
 
 // Конфигурация NocoDB API
 const BASE_URL = "https://ndb.fut.ru";
-const TABLE_ID = "maiff22q0tefj6t";
+const TABLE_ID = "moqj9txmglwy87u";
 const VIEW_ID = "vwy5xmvdj8cuwwcx";
 
 // Добавим ID поля для даты загрузки
-const DATE_FIELD_ID = "cpzymi7tw8pkmx8";
+const DATE_FIELD_ID = "cdbi4yxd4blp8gf";
 
 // Эндпоинты для работы с записями
 const RECORDS_ENDPOINT = `${BASE_URL}/api/v2/tables/${TABLE_ID}/records`;
@@ -17,9 +17,9 @@ const FILE_UPLOAD_ENDPOINT = `${BASE_URL}/api/v2/storage/upload`;
 
 // ID полей для загрузки решений
 const SOLUTION_FIELDS = {
-    solution1: "cuk0poya68l6h30", // Загрузите индивидуальное задание 1
-    solution2: "cvjx55zld5x1n6b", // Загрузите индивидуальное задание 2
-    solution3: "c0g3ard2hj3vw2t"  // Загрузите индивидуальное задание 3
+    solution1: "c0wqssmwdzknf9e", // Загрузите индивидуальное задание 1
+    solution2: "cd7u8cxoan92sxn", // Загрузите индивидуальное задание 2
+    solution3: "c9wmn7brgt9q5y6"  // Загрузите индивидуальное задание 3
 };
 
 // Ключ 
